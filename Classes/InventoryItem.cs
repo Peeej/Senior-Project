@@ -26,15 +26,11 @@ namespace SeniorProjectWebsite.Classes
 
         public void updateItem()
         {
-
-        }
-
-        private void saveInventoryItem()
-        {
-            string sql = "Update inventory set productName = @prodname, sotckQuantity = @invQuantity, productSKU = @prodSku";
+            string sql = "Update inventory set productName = @prodname, sotckQuantity = @invQuantity, productSKU = @prodSku where inventoryId = @inventoryid";
 
             SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.AppSettings["ConnectionString"]);
             SqlCommand cmd = new SqlCommand(sql, sqlConnection);
+            cmd.Parameters.Add(new SqlParameter("@inventoryid", inventoryId));
             cmd.Parameters.Add(new SqlParameter("@prodName", name));
             cmd.Parameters.Add(new SqlParameter("@invQuantity", inventoryQuantity));
             cmd.Parameters.Add(new SqlParameter("@prodSku", productSku));
@@ -44,8 +40,27 @@ namespace SeniorProjectWebsite.Classes
                 sqlConnection.Open();
                 cmd.ExecuteNonQuery();
             }
+        }
 
+        private int saveInventoryItem()
+        {
+            string sql = "Insert into inventory Select @prodName, @invQuantity, @prodSku Select Scope_Identity()";
 
+            SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.AppSettings["ConnectionString"]);
+            SqlCommand cmd = new SqlCommand(sql, sqlConnection);
+            cmd.Parameters.Add(new SqlParameter("@prodName", name));
+            cmd.Parameters.Add(new SqlParameter("@invQuantity", inventoryQuantity));
+            cmd.Parameters.Add(new SqlParameter("@prodSku", productSku));
+
+            int newId;
+            using (sqlConnection)
+            {
+                sqlConnection.Open();
+                newId = int.Parse(cmd.ExecuteScalar().ToString());
+            }
+
+            inventoryId = newId;
+            return newId;
         }
     }
 }

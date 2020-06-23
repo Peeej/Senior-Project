@@ -24,6 +24,15 @@ namespace SeniorProjectWebsite.OrderEntry
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ctlOrder;
 
         /// <summary>
+        /// hforderid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hforderid;
+
+        /// <summary>
         /// txtCustomer control.
         /// </summary>
         /// <remarks>
@@ -69,13 +78,22 @@ namespace SeniorProjectWebsite.OrderEntry
         protected global::System.Web.UI.WebControls.TextBox txtTrackNum;
 
         /// <summary>
-        /// ordItem control.
+        /// ddlItem control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::SeniorProjectWebsite.OrderEntry.OrderItem ordItem;
+        protected global::System.Web.UI.WebControls.DropDownList ddlItem;
+
+        /// <summary>
+        /// txtQuantity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtQuantity;
 
         /// <summary>
         /// grdOrderItems control.
@@ -85,6 +103,24 @@ namespace SeniorProjectWebsite.OrderEntry
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView grdOrderItems;
+
+        /// <summary>
+        /// Button1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button Button1;
+
+        /// <summary>
+        /// btnSave control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSave;
 
         /// <summary>
         /// newOrder control.

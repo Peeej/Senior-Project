@@ -125,7 +125,6 @@
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Inventory\InventoryManager.aspx" />
     <Content Include="OrderEntry\OrderEntry.aspx" />
-    <Content Include="OrderEntry\OrderItem.ascx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
@@ -188,12 +187,6 @@
     </Compile>
     <Compile Include="OrderEntry\OrderEntry.aspx.designer.cs">
       <DependentUpon>OrderEntry.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="OrderEntry\OrderItem.ascx.cs">
-      <DependentUpon>OrderItem.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="OrderEntry\OrderItem.ascx.designer.cs">
-      <DependentUpon>OrderItem.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">

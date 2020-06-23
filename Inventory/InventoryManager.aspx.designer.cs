@@ -15,6 +15,15 @@ namespace SeniorProjectWebsite.Inventory
     {
 
         /// <summary>
+        /// invItem control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl invItem;
+
+        /// <summary>
         /// hfInventoryId control.
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace SeniorProjectWebsite.Inventory
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSku;
+
+        /// <summary>
+        /// txtprice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtprice;
 
         /// <summary>
         /// btnSave control.

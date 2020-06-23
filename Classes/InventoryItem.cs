@@ -14,7 +14,7 @@ namespace SeniorProjectWebsite.Classes
         public int inventoryId;
         public int inventoryQuantity;
         public string productSku;
-
+        public decimal price;
         public InventoryItem(string name, int invId, int invQuantity, string sku)
         {
             this.name = name;
@@ -34,6 +34,7 @@ namespace SeniorProjectWebsite.Classes
             cmd.Parameters.Add(new SqlParameter("@prodName", name));
             cmd.Parameters.Add(new SqlParameter("@invQuantity", inventoryQuantity));
             cmd.Parameters.Add(new SqlParameter("@prodSku", productSku));
+            cmd.Parameters.Add(new SqlParameter("@price", price));
 
             using (sqlConnection)
             {

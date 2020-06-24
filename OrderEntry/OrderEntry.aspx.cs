@@ -45,10 +45,11 @@ namespace SeniorProjectWebsite.OrderEntry
         }
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("update orders set customername = @cn, deliveryAddress = @da, orderDate = @od, price = @price, orderActive = @oactive where orderid = @orderid");
+            SqlCommand cmd = new SqlCommand("update orders set customername = @cn, deliveryAddress = @da, orderDate = @od, price = @price, orderActive = @oactive, trackingNumber = @tn where orderid = @orderid");
             cmd.Parameters.Add(new SqlParameter("@cn", txtCustomer.Text));
             cmd.Parameters.Add(new SqlParameter("@da", txtAddress.Text));
             cmd.Parameters.Add(new SqlParameter("@od", System.DateTime.Now));
+            cmd.Parameters.Add(new SqlParameter("@tn", txtTrackNum.Text));
             cmd.Parameters.Add(new SqlParameter("@oactive", chkDelivered.Checked));
             cmd.Parameters.Add(new SqlParameter("@orderid", int.Parse(hforderid.Value.ToString())));
             decimal price = getOrderPrice(int.Parse(hforderid.Value.ToString()));
@@ -65,6 +66,10 @@ namespace SeniorProjectWebsite.OrderEntry
             int orderId = int.Parse(SeniorProjectWebsite.Classes.SQLHelper.ExecuteScalar(cmd).ToString());
             hforderid.Value = orderId.ToString();
             ctlOrder.Visible = true;
+
+            cmd = new SqlCommand("Select * from ordersProducts where orderId = " + hforderid.Value.ToString());
+            grdOrderItems.DataSource = Classes.SQLHelper.ExecuteDataTable(cmd);
+            grdOrderItems.DataBind();
         }
         protected void grdOrderItems_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -114,15 +119,17 @@ namespace SeniorProjectWebsite.OrderEntry
 
         protected void orders_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("Select * from orders where price <> -1 and orderid = " + orders.SelectedDataKey.ToString());
+            SqlCommand cmd = new SqlCommand("Select * from orders where price <> -1 and orderid = " + orders.SelectedRow.Cells[1].Text);
             DataTable dt = Classes.SQLHelper.ExecuteDataTable(cmd);
-            hforderid.Value = orders.SelectedDataKey.ToString();
+            hforderid.Value = orders.SelectedRow.Cells[1].Text;
             txtCustomer.Text = dt.Rows[0]["customername"].ToString();
             txtAddress.Text = dt.Rows[0]["deliveryAddress"].ToString();
             txtTrackNum.Text = dt.Rows[0]["trackingNumber"].ToString();
             chkDelivered.Checked = bool.Parse(dt.Rows[0]["orderActive"].ToString());
-
-
+            ctlOrder.Visible = true;
+            cmd = new SqlCommand("Select * from ordersProducts where orderId = " + hforderid.Value.ToString());
+            grdOrderItems.DataSource = Classes.SQLHelper.ExecuteDataTable(cmd);
+            grdOrderItems.DataBind();
         }
     }
 }

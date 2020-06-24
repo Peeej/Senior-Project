@@ -49,7 +49,7 @@
                
         </div>
         <asp:Button ID="newOrder" style="padding:50, 50, 50, 50;" Text="new order" runat="server" onclick="newOrder_Click"/>
-        <asp:GridView id="orders" style="padding:50, 50, 50, 50;" runat="server" OnSelectedIndexChanged="orders_SelectedIndexChanged" AutoGenerateSelectButton="true" DataKeyNames="orderid">
+        <asp:GridView id="orders" style="padding:50, 50, 50, 50;" DataKeyNames="orderId" runat="server" OnSelectedIndexChanged="orders_SelectedIndexChanged" AutoGenerateSelectButton="true" >
         </asp:GridView>
     </div>
 </asp:Content>

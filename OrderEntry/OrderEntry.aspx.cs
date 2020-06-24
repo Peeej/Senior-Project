@@ -45,7 +45,7 @@ namespace SeniorProjectWebsite.OrderEntry
         }
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("update orders set customername = @cn, deliveryAddress = @da, orderDate = @od, price = @price, orderActive = @oactive, trackingNumber = @tn where orderid = @orderid");
+            SqlCommand cmd = new SqlCommand("update orders set customername = @cn, deliveryAddress = @da, orderDate = @od, price = @price, delivered = @oactive, trackingNumber = @tn where orderid = @orderid");
             cmd.Parameters.Add(new SqlParameter("@cn", txtCustomer.Text));
             cmd.Parameters.Add(new SqlParameter("@da", txtAddress.Text));
             cmd.Parameters.Add(new SqlParameter("@od", System.DateTime.Now));
@@ -103,6 +103,8 @@ namespace SeniorProjectWebsite.OrderEntry
                 cmd.Parameters.Add(new SqlParameter("@productId", ddlItem.SelectedValue));
                 cmd.Parameters.Add(new SqlParameter("@quantity", txtQuantity.Text));
 
+                getOrderPrice(int.Parse(hforderid.Value.ToString()));
+
                 Classes.SQLHelper.ExecuteScalar(cmd);
 
                 cmd = new SqlCommand("Select * from ordersProducts where orderId = " + hforderid.Value.ToString());
@@ -125,7 +127,7 @@ namespace SeniorProjectWebsite.OrderEntry
             txtCustomer.Text = dt.Rows[0]["customername"].ToString();
             txtAddress.Text = dt.Rows[0]["deliveryAddress"].ToString();
             txtTrackNum.Text = dt.Rows[0]["trackingNumber"].ToString();
-            chkDelivered.Checked = bool.Parse(dt.Rows[0]["orderActive"].ToString());
+            chkDelivered.Checked = bool.Parse(dt.Rows[0]["delivered"].ToString());
             ctlOrder.Visible = true;
             cmd = new SqlCommand("Select * from ordersProducts where orderId = " + hforderid.Value.ToString());
             grdOrderItems.DataSource = Classes.SQLHelper.ExecuteDataTable(cmd);

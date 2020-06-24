@@ -40,7 +40,7 @@ namespace SeniorProjectWebsite.OrderEntry
             {
                 price += decimal.Parse(dr["quantity"].ToString()) * decimal.Parse(dr["price"].ToString());
             }
-
+            lblPrice.Text = price.ToString();
             return price;
         }
         protected void btnSave_Click(object sender, EventArgs e)
@@ -61,14 +61,14 @@ namespace SeniorProjectWebsite.OrderEntry
 
         protected void newOrder_Click(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("Delete from orders where price = -1 Insert into orders Select 'Enter Customer', 'Enter Address', GETDATE(), -1, 0 Select Scope_Identity()");
+            SqlCommand cmd = new SqlCommand("Delete from orders where price = -1 Insert into orders Select 'Enter Customer', 'Enter Address', GETDATE(), -1, 0,'Enter Tracking Number' Select Scope_Identity()");
             int orderId = int.Parse(SeniorProjectWebsite.Classes.SQLHelper.ExecuteScalar(cmd).ToString());
             hforderid.Value = orderId.ToString();
             ctlOrder.Visible = true;
         }
         protected void grdOrderItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("Select * from ordersItems where orderId = " + int.Parse(hforderid.Value.ToString()));
+            SqlCommand cmd = new SqlCommand("Select (Select productName from inventory where inventoryId = orderProductId), quantity from ordersItems where orderId = " + int.Parse(hforderid.Value.ToString()));
             grdOrderItems.DataSource = Classes.SQLHelper.ExecuteDataTable(cmd);
             grdOrderItems.DataBind();
         }
@@ -90,16 +90,15 @@ namespace SeniorProjectWebsite.OrderEntry
 
         private void saveItem()
         {
-            if (ddlItem.SelectedIndex != 0 | int.Parse(txtQuantity.Text) <= int.Parse(ddlItem.SelectedItem.Text.Split(':')[1].ToString()))
+            if (ddlItem.SelectedValue != "-1" | int.Parse(txtQuantity.Text) <= int.Parse(ddlItem.SelectedItem.Text.Split(':')[1].ToString()))
             {
                 SqlConnection sqlConnection = new SqlConnection(System.Configuration.ConfigurationManager.AppSettings["ConnectionString"]);
                 SqlCommand cmd = new SqlCommand("Insert into ordersproducts Select @orderId, @productId, @quantity Select Scope_Identity() update inventory set StockQuantity = StockQuantity - @quantity where inventoryId = @productId");
-                cmd.Connection = sqlConnection;
                 cmd.Parameters.Add(new SqlParameter("@orderId", hforderid.Value.ToString()));
                 cmd.Parameters.Add(new SqlParameter("@productId", ddlItem.SelectedValue));
                 cmd.Parameters.Add(new SqlParameter("@quantity", txtQuantity.Text));
-                cmd.Connection.Open();
-                cmd.Connection.Close();
+
+                Classes.SQLHelper.ExecuteScalar(cmd);
 
                 cmd = new SqlCommand("Select * from ordersProducts where orderId = " + hforderid.Value.ToString());
                 grdOrderItems.DataSource = Classes.SQLHelper.ExecuteDataTable(cmd);
@@ -110,13 +109,19 @@ namespace SeniorProjectWebsite.OrderEntry
         protected void btnSave1_Click(object sender, EventArgs e)
         {
             saveItem();
+            loadDropdown();
         }
 
         protected void orders_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SqlCommand cmd = new SqlCommand("Select * from orders where price <> -1");
-           DataTable dt = Classes.SQLHelper.ExecuteDataTable(cmd);
-            txtCustomer.Text = "";
+            SqlCommand cmd = new SqlCommand("Select * from orders where price <> -1 and orderid = " + orders.SelectedDataKey.ToString());
+            DataTable dt = Classes.SQLHelper.ExecuteDataTable(cmd);
+            hforderid.Value = orders.SelectedDataKey.ToString();
+            txtCustomer.Text = dt.Rows[0]["customername"].ToString();
+            txtAddress.Text = dt.Rows[0]["deliveryAddress"].ToString();
+            txtTrackNum.Text = dt.Rows[0]["trackingNumber"].ToString();
+            chkDelivered.Checked = bool.Parse(dt.Rows[0]["orderActive"].ToString());
+
 
         }
     }
